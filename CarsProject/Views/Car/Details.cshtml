@@ -1,0 +1,101 @@
+﻿@model CarsProject.ViewModels.CarViewModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Car Details</h1>
+
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Make)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Make)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Model)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Model)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Year)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Year)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Door)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Door)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Color)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Color)
+        </dd>
+        <dt class="col-sm-2">
+            <label for="Price">Guess the Price</label>
+        </dt>
+        <dd class="col-sm-10">
+            <input type="number" id="priceGuessed" />
+            <input type="button" id="btnGuess" value="Guess!" class="btn btn-primary" />
+        </dd>
+        @Html.Hidden("currentPrice", Model.Price)
+    </dl>
+</div>
+<div>
+    |
+    <a asp-action="Index">Back to List</a>
+</div>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#btnGuess').on('click', function () {
+
+            $.ajax({
+
+                url: '/Car/GuessPrice',
+                type: 'POST',
+                data: {
+                    priceGuessed: $("#priceGuessed").val(),
+                    currentPrice: $("#currentPrice").val()
+                },
+                dataType: 'json',
+                success: function (data) {
+                    if (data == true)
+                        Swal.fire(
+                            'Good job!',
+                            'Your price is in a good threshold!',
+                            'success'
+                        );
+                    else
+                        Swal.fire(
+                            'Opps!',
+                            'Try again!',
+                            'error'
+                        );
+                    $('#guess-modal').modal('show');
+                },
+                error: function (request, error) {
+                    alert("Request: " + JSON.stringify(request));
+                }
+            });
+        });
+
+    });
+</script>
+
+
