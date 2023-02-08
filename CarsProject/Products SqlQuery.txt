@@ -1,0 +1,13 @@
+
+select isnull(FirstName,'') + ' ' + isnull(LastName,'')  as 'Full Name',
+Age,
+od.OrderID,
+DateCreated,
+MethodofPurchase as 'Purchase Method',
+ProductNumber,
+ProductOrigin
+
+from OrdersDetails od
+inner join Orders o on o.OrderID = od.OrderDetailID
+inner join Customer c on c.PersonID = o.PersonID
+where od.ProductID=1112222333
